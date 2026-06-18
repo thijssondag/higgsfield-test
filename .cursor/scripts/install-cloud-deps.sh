@@ -51,6 +51,20 @@ wire_higgsfield_credentials() {
 
   mkdir -p "${creds_dir}"
 
+  # Preserve existing, still-valid credentials. After an interactive login the
+  # CLI rotates the refresh token on each use and persists the new value here
+  # (this directory is persisted across cloud sessions). Overwriting it from the
+  # static secret tokens would revert to a stale refresh token and break auth
+  # with "Session expired". Only (re)write credentials when none exist yet or
+  # the current ones no longer authenticate — secrets act as a bootstrap/fallback.
+  if [ -f "${creds_file}" ] && higgsfield account status >/dev/null 2>&1; then
+    log "Existing Higgsfield credentials are valid; leaving them untouched"
+    export HIGGSFIELD_CREDENTIALS_PATH="${creds_file}"
+    grep -q 'HIGGSFIELD_CREDENTIALS_PATH=' "${HOME}/.bashrc" 2>/dev/null \
+      || printf '\nexport HIGGSFIELD_CREDENTIALS_PATH="%s"\n' "${creds_file}" >> "${HOME}/.bashrc"
+    return 0
+  fi
+
   local access_token="${higgsfield_access_token:-${HIGGSFIELD_ACCESS_TOKEN:-}}"
   local refresh_token="${higgsfield_refresh_token:-${HIGGSFIELD_REFRESH_TOKEN:-}}"
 

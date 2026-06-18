@@ -37,7 +37,11 @@ Cloud agents use `.cursor/environment.json`. On startup, the `install` script ru
 
 ### Required: Higgsfield authentication secrets
 
-Cloud agents cannot run interactive `higgsfield auth login`. Provide credentials via Cursor Cloud Agent secrets.
+Cloud agents cannot run interactive `higgsfield auth login` from the agent shell. Provide credentials via Cursor Cloud Agent secrets, or log in once via the Desktop pane (see "Credential persistence" below).
+
+#### Credential persistence
+
+`~/.config/higgsfield` is a `persistedDirectory` (see `.cursor/environment.json`), so `credentials.json` survives across cloud sessions. The CLI rotates the refresh token on each use and writes the new value back to that file, so the bootstrap script **does not overwrite an already-valid `credentials.json`** — it only writes from the secret tokens when no working credentials exist (the secrets are a bootstrap/fallback). This means a one-time Desktop-pane `higgsfield auth login` persists without needing to re-update the secrets. Note: if the VM sits idle past the refresh-token lifetime, auth can still expire and a fresh login (or updated secrets) is required.
 
 **Recommended — separate token secrets (matches Cursor Secrets UI):**
 

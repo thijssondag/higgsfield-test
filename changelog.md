@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-06-18 — Persist rotated Higgsfield credentials
+
+**Author:** Cursor Cloud Agent
+
+### Changed
+
+- `.cursor/scripts/install-cloud-deps.sh` — `wire_higgsfield_credentials` now preserves an existing, still-valid `credentials.json` instead of unconditionally overwriting it from the static secret tokens. The CLI rotates the refresh token on use; clobbering it with the original secret reverted to a stale token and caused `Session expired`. Secret tokens now act only as a bootstrap/fallback when no working credentials exist.
+- `AGENTS.md` — documented credential persistence behavior and the one-time Desktop-pane login path.
+
+### Why
+
+After an interactive login the rotated refresh token is persisted in `~/.config/higgsfield` (a persisted directory), but the startup script was overwriting it from the original secrets on every boot, breaking auth. Preserving valid credentials makes a one-time login durable across cloud sessions.
+
 ## 2026-06-18 — Cursor Cloud + Higgsfield CLI setup
 
 **Author:** Cursor Cloud Agent
