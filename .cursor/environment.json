@@ -1,0 +1,9 @@
+{
+  "install": "bash .cursor/scripts/install-cloud-deps.sh",
+  "env": {
+    "PATH": "/home/ubuntu/.local/bin:/usr/local/bin:/usr/bin:/bin"
+  },
+  "persistedDirectories": [
+    "/home/ubuntu/.config/higgsfield"
+  ]
+}
