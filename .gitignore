@@ -9,3 +9,8 @@
 # Editor
 *.swp
 *.swo
+
+# Generated media from rwe-explainer/run-plan.sh
+rwe-explainer/frames/
+rwe-explainer/videos/
+rwe-explainer/style-reference.png
