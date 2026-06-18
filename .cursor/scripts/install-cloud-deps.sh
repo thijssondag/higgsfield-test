@@ -51,15 +51,18 @@ wire_higgsfield_credentials() {
 
   mkdir -p "${creds_dir}"
 
+  local access_token="${higgsfield_access_token:-${HIGGSFIELD_ACCESS_TOKEN:-}}"
+  local refresh_token="${higgsfield_refresh_token:-${HIGGSFIELD_REFRESH_TOKEN:-}}"
+
   if [ -n "${HIGGSFIELD_CREDENTIALS_JSON:-}" ]; then
     log "Writing Higgsfield credentials from HIGGSFIELD_CREDENTIALS_JSON secret"
     printf '%s' "${HIGGSFIELD_CREDENTIALS_JSON}" > "${creds_file}"
     chmod 600 "${creds_file}"
-  elif [ -n "${higgsfield_access_token:-}" ] && [ -n "${higgsfield_refresh_token:-}" ]; then
-    log "Writing Higgsfield credentials from higgsfield_access_token + higgsfield_refresh_token secrets"
+  elif [ -n "${access_token}" ] && [ -n "${refresh_token}" ]; then
+    log "Writing Higgsfield credentials from access/refresh token secrets"
     jq -n \
-      --arg access_token "${higgsfield_access_token}" \
-      --arg refresh_token "${higgsfield_refresh_token}" \
+      --arg access_token "${access_token}" \
+      --arg refresh_token "${refresh_token}" \
       '{access_token: $access_token, refresh_token: $refresh_token}' > "${creds_file}"
     chmod 600 "${creds_file}"
   elif [ -n "${HIGGSFIELD_CREDENTIALS_PATH:-}" ] && [ -f "${HIGGSFIELD_CREDENTIALS_PATH}" ]; then
