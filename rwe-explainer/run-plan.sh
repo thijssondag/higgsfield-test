@@ -49,6 +49,7 @@ run_video() {
     --prompt "$prompt" \
     --start-image "$start" \
     --end-image "$end" \
+    --mode fast \
     --duration 15 \
     --aspect_ratio 16:9 \
     --resolution 720p \

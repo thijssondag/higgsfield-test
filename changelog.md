@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-06-18 — Use Seedance 2.0 Fast (unlimited) tier for RWE plan
+
+**Author:** Cursor Cloud Agent
+
+### Changed
+
+- `rwe-explainer/run-plan.sh` — pass `--mode fast` to `seedance_2_0` so clips use the Enhanced Seedance 2.0 Fast (unlimited) tier.
+- `.gitignore` — ignore generated media (`rwe-explainer/frames/`, `rwe-explainer/videos/`, `rwe-explainer/style-reference.png`).
+
 ## 2026-06-18 — Persist rotated Higgsfield credentials
 
 **Author:** Cursor Cloud Agent
