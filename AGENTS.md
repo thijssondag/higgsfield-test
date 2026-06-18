@@ -35,25 +35,40 @@ Cloud agents use `.cursor/environment.json`. On startup, the `install` script ru
 3. Wires credentials from Cursor secrets
 4. Verifies the CLI is on `PATH`
 
-### Required: Higgsfield authentication secret
+### Required: Higgsfield authentication secrets
 
 Cloud agents cannot run interactive `higgsfield auth login`. Provide credentials via Cursor Cloud Agent secrets.
+
+**Recommended — separate token secrets (matches Cursor Secrets UI):**
+
+| Secret name | Value |
+|---|---|
+| `higgsfield_access_token` | Access token from `higgsfield auth token` or `credentials.json` |
+| `higgsfield_refresh_token` | Refresh token from `credentials.json` |
+
+The install script writes these into `~/.config/higgsfield/credentials.json` as:
+
+```json
+{
+  "access_token": "<higgsfield_access_token>",
+  "refresh_token": "<higgsfield_refresh_token>"
+}
+```
+
+**Alternative — full credentials JSON:**
+
+| Secret name | Value |
+|---|---|
+| `HIGGSFIELD_CREDENTIALS_JSON` | Full contents of `~/.config/higgsfield/credentials.json` |
 
 **One-time setup on your local machine:**
 
 ```bash
 higgsfield auth login
 higgsfield account status   # confirm authenticated
-cat ~/.config/higgsfield/credentials.json
+higgsfield auth token       # access token
+cat ~/.config/higgsfield/credentials.json   # includes refresh_token
 ```
-
-**In Cursor → Dashboard → Cloud Agents → Secrets**, add:
-
-| Secret name | Value |
-|---|---|
-| `HIGGSFIELD_CREDENTIALS_JSON` | Full contents of `~/.config/higgsfield/credentials.json` |
-
-The install script writes this to `~/.config/higgsfield/credentials.json` and sets `HIGGSFIELD_CREDENTIALS_PATH`. Credentials are persisted across cloud sessions via `persistedDirectories` in `environment.json`.
 
 ### Verify cloud setup
 
@@ -86,6 +101,6 @@ When stitching clips (e.g. RWE explainer plan in `.cursor/plans/`), use `ffmpeg`
 
 | Error | Fix |
 |---|---|
-| `Not authenticated` | Add or refresh `HIGGSFIELD_CREDENTIALS_JSON` secret |
-| `Session expired` | Re-run `higgsfield auth login` locally, copy fresh `credentials.json` to secrets |
+| `Not authenticated` | Add `higgsfield_access_token` + `higgsfield_refresh_token` secrets |
+| `Session expired` | Refresh tokens locally and update both secrets |
 | `higgsfield: command not found` | Re-run environment install; check `~/.local/bin` is on `PATH` |

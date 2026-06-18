@@ -55,6 +55,13 @@ wire_higgsfield_credentials() {
     log "Writing Higgsfield credentials from HIGGSFIELD_CREDENTIALS_JSON secret"
     printf '%s' "${HIGGSFIELD_CREDENTIALS_JSON}" > "${creds_file}"
     chmod 600 "${creds_file}"
+  elif [ -n "${higgsfield_access_token:-}" ] && [ -n "${higgsfield_refresh_token:-}" ]; then
+    log "Writing Higgsfield credentials from higgsfield_access_token + higgsfield_refresh_token secrets"
+    jq -n \
+      --arg access_token "${higgsfield_access_token}" \
+      --arg refresh_token "${higgsfield_refresh_token}" \
+      '{access_token: $access_token, refresh_token: $refresh_token}' > "${creds_file}"
+    chmod 600 "${creds_file}"
   elif [ -n "${HIGGSFIELD_CREDENTIALS_PATH:-}" ] && [ -f "${HIGGSFIELD_CREDENTIALS_PATH}" ]; then
     log "Using credentials at HIGGSFIELD_CREDENTIALS_PATH=${HIGGSFIELD_CREDENTIALS_PATH}"
     creds_file="${HIGGSFIELD_CREDENTIALS_PATH}"
@@ -84,7 +91,7 @@ verify_higgsfield() {
     log "higgsfield auth: $(higgsfield account status 2>&1 | head -1)"
   else
     echo "higgsfield CLI is installed but not authenticated." >&2
-    echo "Add HIGGSFIELD_CREDENTIALS_JSON to Cursor Cloud Agent secrets." >&2
+    echo "Add higgsfield_access_token and higgsfield_refresh_token to Cursor Cloud Agent secrets." >&2
     echo "See AGENTS.md → Cursor Cloud specific instructions." >&2
   fi
 }
