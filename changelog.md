@@ -1,5 +1,13 @@
 # Changelog
 
+### Changed
+
+- `.gitignore` — ignore generated RWE explainer media (`rwe-explainer/frames/`, `videos/`, `style-reference.png`)
+
+### Why
+
+Generated PNG/MP4 outputs from the explainer pipeline should not be committed; CLI and browser workflows both write to these paths.
+
 ## 2026-06-18 — Chrome DevTools MCP for browser Seedance
 
 **Author:** Cursor Cloud Agent
