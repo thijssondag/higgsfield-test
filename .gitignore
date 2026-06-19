@@ -10,6 +10,10 @@
 *.swp
 *.swo
 
+# Node (browser-cdp CLI)
+node_modules/
+package-lock.json
+
 # Generated media from rwe-explainer/run-plan.sh
 rwe-explainer/frames/
 rwe-explainer/videos/

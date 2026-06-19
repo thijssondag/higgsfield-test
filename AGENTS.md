@@ -118,7 +118,18 @@ CLI `seedance_2_0 --mode fast` still bills credits (~52.5/15s clip). For the **E
 
 Or run `bash rwe-explainer/run-plan.sh --frames skip --videos browser` for instructions only.
 
-**Troubleshooting:** MCP tools missing → restart agent. Port 9222 in use → only one debug Chrome instance. Attach mode requires Chrome running before the agent invokes DevTools MCP.
+**MCP not loading?** If a fresh agent restart still does not expose `navigate_page` / `click` / `upload_file`, use the **CDP CLI fallback** (same Chrome on port 9222):
+
+```bash
+bash .cursor/scripts/browser-cdp.sh list-pages
+bash .cursor/scripts/browser-cdp.sh snapshot
+bash .cursor/scripts/browser-cdp.sh click --text "Video"
+bash .cursor/scripts/browser-cdp.sh upload --selector 'input[type="file"]' --file /workspace/rwe-explainer/frames/scene01-start.png
+```
+
+See [`rwe-explainer/BROWSER-SEEDANCE.md`](rwe-explainer/BROWSER-SEEDANCE.md) for the full runbook with either MCP or `browser-cdp.sh`.
+
+**Troubleshooting:** MCP tools missing → restart agent, then try `browser-cdp.sh`. Port 9222 in use → only one debug Chrome instance. Attach mode requires Chrome running before the agent invokes DevTools MCP or `browser-cdp.sh`.
 
 ### Auth errors in cloud
 

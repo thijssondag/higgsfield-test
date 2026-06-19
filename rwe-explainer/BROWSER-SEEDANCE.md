@@ -2,7 +2,16 @@
 
 Use the **Enhanced Seedance 2.0 Fast / UNLIMITED** tier in the Higgsfield web UI instead of CLI `seedance_2_0` (CLI still bills ~52.5 credits per 15s clip even with `--mode fast`).
 
-The agent automates the UI via **Chrome DevTools MCP** (`navigate_page`, `click`, `fill`, `upload_file`, `take_screenshot`). After each clip completes, download with the CLI (same account — no re-generation):
+The agent automates the UI via **Chrome DevTools MCP** (`navigate_page`, `click`, `fill`, `upload_file`, `take_screenshot`). If MCP tools are not loaded in a cloud agent session, use the **CDP CLI fallback** — same Chrome on port 9222:
+
+```bash
+bash .cursor/scripts/browser-cdp.sh snapshot          # list interactive elements
+bash .cursor/scripts/browser-cdp.sh screenshot        # verify current view
+bash .cursor/scripts/browser-cdp.sh click --text "Video"
+bash .cursor/scripts/browser-cdp.sh upload --selector 'input[type="file"]' --file /abs/path.png
+```
+
+After each clip completes, download with the CLI (same account — no re-generation):
 
 ```bash
 bash rwe-explainer/harvest-videos.sh
@@ -102,7 +111,7 @@ Constraints: smooth motion, stable framing, no jitter, no warping, UI cards stay
 
 | Issue | Fix |
 |---|---|
-| MCP tools missing | Restart agent after adding `.cursor/mcp.json` |
+| MCP tools missing | Restart agent; use `bash .cursor/scripts/browser-cdp.sh` as fallback (attach to same Chrome on 9222) |
 | Cannot attach to Chrome | Run `start-chrome-debug.sh`; only one instance on port 9222 |
 | `harvest-videos.sh` finds &lt; 3 jobs | Finish browser generations; check same account with `higgsfield account status` |
 | NSFW false positive | Retry the clip in the browser |
