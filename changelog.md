@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-06-19 — CDP CLI fallback for browser automation
+
+**Author:** Cursor Cloud Agent
+
+### Added
+
+- `.cursor/scripts/browser-cdp.sh` + `.cursor/scripts/browser-cdp/` — puppeteer-core CLI that attaches to Desktop Chrome on port 9222 when Chrome DevTools MCP is unavailable in cloud agents
+- `snapshot`, `click`, `fill`, `upload`, `screenshot`, and related commands mirroring the DevTools MCP workflow
+
+### Changed
+
+- `.cursor/scripts/install-cloud-deps.sh` — installs `browser-cdp` dependencies on cloud VM startup
+- `AGENTS.md`, `rwe-explainer/BROWSER-SEEDANCE.md` — document CDP CLI fallback when project-level MCP does not load
+- `.gitignore` — ignore `node_modules/` and `package-lock.json`
+
+### Why
+
+Project-level `.cursor/mcp.json` may not expose `chrome-devtools` tools in some cloud agent sessions even after restart. The CDP CLI controls the same logged-in Chrome profile without requiring MCP.
+
 ### Changed
 
 - `.gitignore` — ignore generated RWE explainer media (`rwe-explainer/frames/`, `videos/`, `style-reference.png`)

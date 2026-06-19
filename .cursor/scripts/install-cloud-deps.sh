@@ -113,7 +113,27 @@ verify_higgsfield() {
   fi
 }
 
+install_browser_cdp_deps() {
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  local cdp_dir="${script_dir}/browser-cdp"
+
+  if [ ! -f "${cdp_dir}/package.json" ]; then
+    log "browser-cdp package.json not found; skipping CDP CLI install"
+    return 0
+  fi
+
+  if [ -d "${cdp_dir}/node_modules/puppeteer-core" ]; then
+    log "browser-cdp dependencies already installed"
+    return 0
+  fi
+
+  log "Installing browser-cdp dependencies (puppeteer-core)"
+  npm install --prefix "${cdp_dir}" --no-fund --no-audit --silent
+}
+
 install_apt_packages curl jq ffmpeg
+install_browser_cdp_deps
 install_higgsfield_cli
 wire_higgsfield_credentials
 ensure_path_persisted
