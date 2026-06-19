@@ -101,6 +101,25 @@ Follow the higgsfield-generate skill:
 
 When stitching clips (e.g. RWE explainer plan in `.cursor/plans/`), use `ffmpeg` after generating individual Seedance clips. Review seams at reduced playback speed before final export.
 
+### Browser Seedance (Chrome DevTools MCP)
+
+CLI `seedance_2_0 --mode fast` still bills credits (~52.5/15s clip). For the **Enhanced Seedance 2.0 Fast / UNLIMITED** web tier, use browser generation + CLI harvest:
+
+1. **Restart the cloud agent** after `.cursor/mcp.json` is present (project-level MCP required for cloud agents).
+2. Desktop pane: `bash .cursor/scripts/start-chrome-debug.sh` — opens Chrome on port 9222 with persisted profile `~/.config/chrome-higgsfield-profile`.
+3. Log into [higgsfield.ai](https://higgsfield.ai) once in that Chrome window.
+4. Agent uses **Chrome DevTools MCP** (`navigate_page`, `upload_file`, `click`, etc.) per [`rwe-explainer/BROWSER-SEEDANCE.md`](rwe-explainer/BROWSER-SEEDANCE.md).
+5. After browser jobs complete:
+   ```bash
+   bash rwe-explainer/harvest-videos.sh
+   bash rwe-explainer/run-plan-stitch.sh
+   ```
+6. Verify billing: `higgsfield account transactions --size 10` — UNLIMITED browser jobs should not show Seedance spend lines.
+
+Or run `bash rwe-explainer/run-plan.sh --frames skip --videos browser` for instructions only.
+
+**Troubleshooting:** MCP tools missing → restart agent. Port 9222 in use → only one debug Chrome instance. Attach mode requires Chrome running before the agent invokes DevTools MCP.
+
 ### Auth errors in cloud
 
 | Error | Fix |

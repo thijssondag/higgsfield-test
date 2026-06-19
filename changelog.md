@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-06-18 — Chrome DevTools MCP for browser Seedance
+
+**Author:** Cursor Cloud Agent
+
+### Added
+
+- `.cursor/mcp.json` — Chrome DevTools MCP (`chrome-devtools-mcp`) attach mode on port 9222 for cloud agents
+- `.cursor/scripts/start-chrome-debug.sh` — launch Chrome with persisted Higgsfield login profile
+- `rwe-explainer/BROWSER-SEEDANCE.md` — DevTools-driven runbook for Enhanced Seedance 2.0 Fast (UNLIMITED)
+- `rwe-explainer/harvest-videos.sh` — download browser/CLI Seedance jobs via `higgsfield generate list/get`
+- `rwe-explainer/run-plan-stitch.sh` — ffmpeg concat for the three scene clips
+
+### Changed
+
+- `.cursor/environment.json` — persist `~/.config/chrome-higgsfield-profile`; add `/exec-daemon` to PATH for `npx`
+- `rwe-explainer/run-plan.sh` — `--frames` / `--videos cli|browser|skip|stitch-only`; CLI Seedance retries on failure
+- `AGENTS.md` — browser Seedance workflow via Chrome DevTools MCP
+
+### Why
+
+CLI Seedance still consumes credits; the web UI UNLIMITED tier should avoid per-clip billing. DevTools MCP lets the agent automate the browser while CLI harvests completed jobs from shared account history.
+
 ## 2026-06-18 — Persist rotated Higgsfield credentials
 
 **Author:** Cursor Cloud Agent
